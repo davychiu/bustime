@@ -1,0 +1,8 @@
+C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\bin\Release\BusTime.exe
+C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\bin\Release\BusTime.pdb
+C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\obj\Release\ResolveAssemblyReference.cache
+C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\obj\Release\BusTime.MainForm.resources
+C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\obj\Release\BusTime.Properties.Resources.resources
+C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\obj\Release\BusTime.csproj.GenerateResource.Cache
+C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\obj\Release\BusTime.exe
+C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\obj\Release\BusTime.pdb

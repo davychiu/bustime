@@ -1,0 +1,8 @@
+C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\obj\Debug\BusTime.MainForm.resources
+C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\obj\Debug\BusTime.Properties.Resources.resources
+C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\obj\Debug\BusTime.csproj.GenerateResource.Cache
+C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\bin\Debug\BusTime.exe
+C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\bin\Debug\BusTime.pdb
+C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\obj\Debug\BusTime.exe
+C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\obj\Debug\BusTime.pdb
