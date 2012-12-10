@@ -6,3 +6,11 @@ C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\bin\Debu
 C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\bin\Debug\BusTime.pdb
 C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\obj\Debug\BusTime.exe
 C:\Users\davychiu\Documents\Visual Studio 2008\Projects\BusTime\BusTime\obj\Debug\BusTime.pdb
+C:\Documents and Settings\davy\My Documents\Visual Studio Projects\BusTime\BusTime\bin\Debug\BusTime.exe
+C:\Documents and Settings\davy\My Documents\Visual Studio Projects\BusTime\BusTime\bin\Debug\BusTime.pdb
+C:\Documents and Settings\davy\My Documents\Visual Studio Projects\BusTime\BusTime\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\davy\My Documents\Visual Studio Projects\BusTime\BusTime\obj\Debug\BusTime.MainForm.resources
+C:\Documents and Settings\davy\My Documents\Visual Studio Projects\BusTime\BusTime\obj\Debug\BusTime.Properties.Resources.resources
+C:\Documents and Settings\davy\My Documents\Visual Studio Projects\BusTime\BusTime\obj\Debug\BusTime.csproj.GenerateResource.Cache
+C:\Documents and Settings\davy\My Documents\Visual Studio Projects\BusTime\BusTime\obj\Debug\BusTime.exe
+C:\Documents and Settings\davy\My Documents\Visual Studio Projects\BusTime\BusTime\obj\Debug\BusTime.pdb

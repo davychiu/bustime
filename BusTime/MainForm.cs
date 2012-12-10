@@ -46,6 +46,7 @@ namespace BusTime
         public Boolean foreThreadDone = false;
 
         private int minute = 0;
+        private static string sessCookie = "";
 
         public MainForm()
         {
@@ -118,7 +119,7 @@ namespace BusTime
             }
             catch (Exception e)
             {
-                //ignore
+                System.Diagnostics.Debug.WriteLine("setWeatherForecast Exception: " + e.Message);
             }
 
             foreThreadDone = true;
@@ -146,6 +147,7 @@ namespace BusTime
                     req.ReadWriteTimeout = 10000; //10 seconds
                     req.Timeout = 15000; //15 seconds
                     req.KeepAlive = false;
+                    req.Proxy = GlobalProxySelection.GetEmptyWebProxy();
 
                     HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
                     Stream pstream = resp.GetResponseStream();
@@ -166,7 +168,7 @@ namespace BusTime
             }
             catch (Exception e)
             {
-                //ignore
+                System.Diagnostics.Debug.WriteLine("setCurrentWeather Exception: " + e.Message);
             }
 
             curThreadDone = true;
@@ -181,47 +183,67 @@ namespace BusTime
                 //String busStopUrl1 = "http://m.translink.ca/api/stops/?f=json&s=" + BUSSTOP1 + "&d=" + BUSSTOP1DIR;
                 //String busStopUrl2 = "http://m.translink.ca/api/stops/?f=json&s=" + BUSSTOP2 + "&d=" + BUSSTOP2DIR;
                 //String busStopUrl3 = "http://m.translink.ca/api/stops/?f=json&s=" + BUSSTOP3 + "&d=" + BUSSTOP3DIR;
-                String busStopUrl1 = "http://m.translink.ca/stop/" + BUSSTOP1;
-                String busStopUrl2 = "http://m.translink.ca/stop/" + BUSSTOP2;
-                String busStopUrl3 = "http://m.translink.ca/stop/" + BUSSTOP3;
-                Hashtable busStops1 = parser(BUSNUM1, getHttp(busStopUrl1));
-                Hashtable busStops2 = parser(BUSNUM2, getHttp(busStopUrl2));
-                Hashtable busStops3 = parser(BUSNUM3, getHttp(busStopUrl3));
+                //String busStopUrl1 = "http://m.translink.ca/stop/" + BUSSTOP1;
+                //String busStopUrl2 = "http://m.translink.ca/stop/" + BUSSTOP2;
+                //String busStopUrl3 = "http://m.translink.ca/stop/" + BUSSTOP3;
+                //String busStopUrl1 = "http://tripplanning.translink.ca/hiwire?.a=iNextBusFind&.s={%24SID}&ShowTimes=1&NumStopTimes=25&LineDirId=&GetSchedules=1&Geocode=0&FormState=0&FromTime=" + DateTime.Now.Hour + ":" + DateTime.Now.Minute + "&PublicNum=" + BUSSTOP1;
+                //String busStopUrl2 = "http://tripplanning.translink.ca/hiwire?.a=iNextBusFind&.s={%24SID}&ShowTimes=1&NumStopTimes=25&LineDirId=&GetSchedules=1&Geocode=0&FormState=0&FromTime=" + DateTime.Now.Hour + ":" + DateTime.Now.Minute + "&PublicNum=" + BUSSTOP2;
+                //String busStopUrl3 = "http://tripplanning.translink.ca/hiwire?.a=iNextBusFind&.s={%24SID}&ShowTimes=1&NumStopTimes=27&LineDirId=&GetSchedules=1&Geocode=0&FormState=0&FromTime=" + DateTime.Now.Hour + ":" + DateTime.Now.Minute + "&PublicNum=" + BUSSTOP3;               
+                //String busStopHash1 = "http://nb.translink.ca/Text/Stop/" + BUSSTOP1;
+                //String busStopHash2 = "http://nb.translink.ca/Text/Stop/" + BUSSTOP2;
+                //String busStopHash3 = "http://nb.translink.ca/Text/Stop/" + BUSSTOP3;
+                //String busStopUrl1 = "http://nb.translink.ca/rideapi.ashx?cp=gsas%2F" + getHttp(busStopHash1).Replace("+", "%2B").Replace("/", "%2F").Replace("=", "%3D");
+                //String busStopHtml1 = getHttp("http://nb.translink.ca/Text/Stop/" + BUSSTOP1);
+                //String busStopUrl2 = "http://nb.translink.ca/rideapi.ashx?cp=gsas%2F" + getHttp(busStopHash2).Replace("+", "%2B").Replace("/", "%2F").Replace("=", "%3D");
+                //String busStopHtml2 = getHttp("http://nb.translink.ca/Text/Stop/" + BUSSTOP2);
+                //String busStopUrl3 = "http://nb.translink.ca/rideapi.ashx?cp=gsas%2F" + getHttp(busStopHash3).Replace("+", "%2B").Replace("/", "%2F").Replace("=", "%3D");
+                //String busStopHtml3 = getHttp("http://nb.translink.ca/Text/Stop/" + BUSSTOP3);
+                //Hashtable busStops1 = parser(BUSNUM1, busStopHtml1);
+                //Hashtable busStops2 = parser(BUSNUM2, busStopHtml2);
+                //Hashtable busStops3 = parser(BUSNUM3, busStopHtml3);
+                String busStop1 = getHttp("http://192.168.0.5/bustime_helper/bustime_helper.php?stop=" + BUSSTOP1);
+                String busStop2 = getHttp("http://192.168.0.5/bustime_helper/bustime_helper.php?stop=" + BUSSTOP2);
+                String busStop3 = getHttp("http://192.168.0.5/bustime_helper/bustime_helper.php?stop=" + BUSSTOP3);
+                //System.Diagnostics.Debug.WriteLine("URL: " + busStopUrl1 + " " + busStopUrl2 + " " + busStopUrl3);
+                System.Diagnostics.Debug.WriteLine("HTML: " + busStop1 + " " + busStop2 + " " + busStop3);
 
                 progressBar1.Invoke(new progressUpdateCallback(progressUpdate), new Object[] { progressBar1, 10 });
 
-                if ((busStops1.Count > 0) && (busStops2.Count > 0) && (busStops3.Count > 0))
+                if ((busStop1.Length > 0) && (busStop2.Length > 0) && (busStop3.Length > 0))
                 {
-                    fillValues(busStops1, BUSNUM1, BUSNUM1 + BUSSTOP1DIR, label1, label2);
-                    fillValues(busStops2, BUSNUM2, BUSNUM2 + BUSSTOP2DIR, label3, label4);
-                    fillValues(busStops3, BUSNUM3, BUSNUM3 + BUSSTOP3DIR, label5, label6);
+                    //fillValues(busStops1, BUSNUM1, BUSNUM1 + BUSSTOP1DIR, label1, label2);
+                    //fillValues(busStops2, BUSNUM2, BUSNUM2 + BUSSTOP2DIR, label3, label4);
+                    //fillValues(busStops3, BUSNUM3, BUSNUM3 + BUSSTOP3DIR, label5, label6);
+                    fillValues(busStop1, BUSNUM1, BUSNUM1 + BUSSTOP1DIR, label1, label2);
+                    fillValues(busStop2, BUSNUM2, BUSNUM2 + BUSSTOP2DIR, label3, label4);
+                    fillValues(busStop3, BUSNUM3, BUSNUM3 + BUSSTOP3DIR, label5, label6);
                 }
                 progressBar1.Invoke(new progressUpdateCallback(progressUpdate), new Object[] { progressBar1, 10 });
             }
             catch (WebException e)
             {
-                //ignore
+                System.Diagnostics.Debug.WriteLine("setBusTimes WebException: " + e.Message);
             }
             catch (ArgumentException ae)
             {
-                //ignore
+                System.Diagnostics.Debug.WriteLine("setBusTimes ArgumentException: " + ae.Message);
             }
             busThreadDone = true;
         }
-        private void fillValues(Hashtable busStops, String stopId, String stopDir, Label labela, Label labelb)
+        private void fillValues(String time, String stopId, String stopDir, Label labela, Label labelb)
         {
-            String name = "";
-            String time = "";
+            //String name = "";
+            //String time = "";
 
-            busStop busStopTmp = (busStop)busStops[stopId];
-            name = "(" + stopDir.Substring(1, 3) + ") " + busStopTmp.stopName;
+            //busStop busStopTmp = (busStop)busStops[stopId];
+            //name = "(" + stopDir.Substring(1, 3) + ") " + busStopTmp.stopName;
 
-            foreach (String bustime in busStopTmp.times)
-            {
-                time += bustime + "  ";
-            }
+            //foreach (String bustime in busStopTmp.times)
+            //{
+            //    time += bustime + "  ";
+            //}
 
-            labela.Invoke(new labelUpdateCallback(labelUpdate), new Object[] { labela, name });
+            //labela.Invoke(new labelUpdateCallback(labelUpdate), new Object[] { labela, name });
             labelb.Invoke(new labelUpdateCallback(labelUpdate), new Object[] { labelb, time });
 
         }
@@ -242,24 +264,39 @@ namespace BusTime
         {
             String results = "";
 
-            try
+            if (url.Length > 0)
             {
-                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-                req.ReadWriteTimeout = 10000; //10 seconds
-                req.Timeout = 15000; //15 seconds
-                req.KeepAlive = false;
+                try
+                {
+                    HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+                    req.UserAgent = "Mozilla/5.0 (Windows NT 5.1; rv:6.0.1) Gecko/20100101 Firefox/6.0.1";
+                    req.ReadWriteTimeout = 5000; //2 seconds
+                    req.Timeout = 5000; //2 seconds
+                    req.KeepAlive = false;
+                    req.Proxy = GlobalProxySelection.GetEmptyWebProxy();
+                    req.Method = "GET";
+                    req.AllowAutoRedirect = true;
+                    if (sessCookie.Length > 0)
+                    {
+                        req.Headers.Add("Cookie", sessCookie);
+                    }
 
-                HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+                    HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+                    if (resp.Headers["Set-Cookie"] != null)
+                    {
+                        sessCookie = resp.Headers["Set-Cookie"];
+                    }
 
-                StreamReader streamReader = new StreamReader(resp.GetResponseStream());
-                results = streamReader.ReadToEnd();
+                    StreamReader streamReader = new StreamReader(resp.GetResponseStream());
+                    results = streamReader.ReadToEnd();
 
-                streamReader.Close();
-                resp.Close();
-            }
-            catch (Exception e)
-            {
-                //ignore
+                    streamReader.Close();
+                    resp.Close();
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("getHttp Exception: " + e.Message);
+                }
             }
 
             return results;
@@ -269,22 +306,43 @@ namespace BusTime
         {
             Hashtable busStops = new Hashtable();
             char[] delimiter = { '\n' };
+            System.Diagnostics.Debug.WriteLine("Parsing " + stopID + ": " + html);
+            //MatchCollection matches = Regex.Matches(html, ";;\\s\">(.*?)</span>");
 
             if (html.Length > 0)
-            {
-                String[] htmlArray = html.Split(delimiter);
+            { 
+                //MatchCollection matches = Regex.Matches(html, "</em>\\sat\\s(.*?)[am|pm]<br/>");
+                MatchCollection matches = Regex.Matches(html, "Time\":\"\\s(.*?)[AM|PM]\",\"");
 
-                if (htmlArray.Length > 10)
+                if (matches.Count > 0)
                 {
-                    busStop busStopTemp = new busStop();
+                    busStop busStoptemp = new busStop();
+                    String busTimestemp = "";
 
-                    busStopTemp.id = stopID;
-                    String stopNameTemp = htmlArray[10].Remove(0, 43);
-                    busStopTemp.stopName = stopNameTemp.Substring(0, stopNameTemp.IndexOf("<"));
-                    busStopTemp.times = htmlArray[11].Trim().Split(new char[] { ' ' });
+                    busStoptemp.id = stopID;                   
+                    foreach (Match match in matches)
+                    {                        
+                        busTimestemp += match.Groups[1].Value.Trim() + " ";
+                        System.Diagnostics.Debug.WriteLine("time is" + match.Groups[1].Value.Trim());
+                    }
+                    System.Diagnostics.Debug.WriteLine("time is" + busTimestemp);
+                    busStoptemp.times = busTimestemp.Trim().Split(new char[] {' '});
+                    busStops.Add(stopID, busStoptemp);
+                }
+
+                //String[] htmlArray = html.Split(delimiter);
+
+                //if (htmlArray.Length > 10)
+                //{
+                //    busStop busStopTemp = new busStop();
+
+                //    busStopTemp.id = stopID;
+                //    String stopNameTemp = htmlArray[10].Remove(0, 43);
+                //    busStopTemp.stopName = stopNameTemp.Substring(0, stopNameTemp.IndexOf("<"));
+                //    busStopTemp.times = htmlArray[11].Trim().Split(new char[] { ' ' });
                                                        
-                    busStops.Add(stopID, busStopTemp);
-                }               
+                //    busStops.Add(stopID, busStopTemp);
+                //}               
             }
             return busStops;
         }        
@@ -312,7 +370,7 @@ namespace BusTime
             }
             catch (Exception e)
             {
-                //ignore
+                System.Diagnostics.Debug.WriteLine("progress Exception: " + e.Message);
             }
         }
 
@@ -343,9 +401,10 @@ namespace BusTime
             {
                 TimeLabel.Text = DateTime.Now.ToString("hh:mm:ss tt");
 
-                if (!DateTime.Now.Minute.Equals(minute)) //every minute
+                if ((!DateTime.Now.Minute.Equals(minute))&&(busThreadDone)&&(curThreadDone)&&(foreThreadDone)) //every minute
                 {
                     //setBusTimes();
+                    System.Diagnostics.Debug.WriteLine("timer: " + sessCookie);
 
                     Thread setBusTimesThread = new Thread(new ThreadStart(setBusTimes));
                     setBusTimesThread.Start();
@@ -372,12 +431,13 @@ namespace BusTime
             }
             catch (Exception pe)
             {
+                System.Diagnostics.Debug.WriteLine("timer Exception: " + pe.Message);
                 return;
             }
             minute = DateTime.Now.Minute;
         }
 
-        private void menuItem2_Click(object sender, EventArgs e)
+        private void pictureBox1_Click(object sender, EventArgs e)
         {
             Thread setBusTimesThread = new Thread(new ThreadStart(setBusTimes));
             setBusTimesThread.Start();
@@ -392,7 +452,7 @@ namespace BusTime
             progressThread.Start();
         }
 
-        private void menuItem1_Click(object sender, EventArgs e)
+        private void pictureBox1_DoubleClick(object sender, EventArgs e)
         {
             Application.Exit();
         }
